@@ -13,23 +13,11 @@ void setup()
 }
 void loop() 
 {
-  float tempc = 500.0;
-  String msg = "Temperature is " + String(tempc) + "°C";
-  
-  // Uncomment Line 21 and 22  and comment line 19 and 18 for temperature in Farenhite only
-  //float tempf = (tempc*9.0)/5.0 + 32;
-  //String msg = "Temperature is " + String(tempf) + "°F";
-
-  //Uncomment Line 25 and 26 for temperature in both Celcius and Farenhite
-  //float tempf = (tempc*9.0)/5.0 + 32;
-  // msg  = msg + "/"+ String(tempf) + "°F"
-   
+  String msg = "e";
   Serial.print("Sending message ");
   Serial.println(msg);
-  
   LoRa.beginPacket();
   LoRa.print(msg);
   LoRa.endPacket();
-  
   delay(5000);
 }

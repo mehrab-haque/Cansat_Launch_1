@@ -21,8 +21,6 @@ void onReceive(int packetSize) {
   String incoming = "";
 
   while (LoRa.available()) {
-    if((char)LoRa.read()=='#')
-      break;
     incoming += (char)LoRa.read();
   }
   Serial.println("Message: " + incoming);
