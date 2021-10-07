@@ -10,39 +10,23 @@ void setup()
     while (1);
   }
   LoRa.onReceive(onReceive);
-
-  // put the radio into receive mode
   LoRa.receive();
-
 }
 void loop() 
 {
-//  // To store the received message in a string, uncomment line 16 and 24.
-//  // String str="";
-//  int packetSize = LoRa.parsePacket();
-//  if (packetSize) 
-//  {
-//    Serial.print("Received packet '");
-//    while (LoRa.available()) 
-//    {
-//      Serial.print((char)LoRa.read());
-//      //str=str+((char)LoRa.read());    
-//    }
-//    Serial.print("' with RSSI ");
-//    Serial.println(LoRa.packetRssi());
-//  }
 }
 
 void onReceive(int packetSize) {
-  // received a packet
-  Serial.print("Received packet '");
+  if (packetSize == 0) return;         
+  String incoming = "";
 
-  // read packet
-  for (int i = 0; i < packetSize; i++) {
-    Serial.print((char)LoRa.read());
+  while (LoRa.available()) {
+    if((char)LoRa.read()=='#')
+      break;
+    incoming += (char)LoRa.read();
   }
-
-  // print RSSI of packet
-  Serial.print("' with RSSI ");
-  Serial.println(LoRa.packetRssi());
+  Serial.println("Message: " + incoming);
+  Serial.println("RSSI: " + String(LoRa.packetRssi()));
+  Serial.println("Snr: " + String(LoRa.packetSnr()));
+  Serial.println();
 }
