@@ -1,0 +1,6 @@
+AT
+AT+ROLE=0
+AT+ADDR?
+
+Slave :
++ADDR:0020:12:082A94
