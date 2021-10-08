@@ -13,11 +13,12 @@ void setup()
 }
 void loop() 
 {
-  String msg = "e";
+  String msg = String(counter);
+  counter++;
   Serial.print("Sending message ");
   Serial.println(msg);
   LoRa.beginPacket();
   LoRa.print(msg);
   LoRa.endPacket();
-  delay(5000);
+  delay(4000);
 }
