@@ -25,7 +25,7 @@ void setup()
     while (1) {}
   }
   Serial.println("BMP180 initialization successfully...");
-  
+  Serial.println("cansat initialization completed...");
   
 }
 void loop() 
@@ -33,66 +33,10 @@ void loop()
   temp=bmp.readTemperature();
   alt=bmp.readAltitude();
   pressure=bmp.readPressure();
-//  LoRa.onReceive(onReceive);
-//  LoRa.receive();
-  receiveMessage(LoRa.parsePacket());
-}
-
-void receiveMessage(int packetSize) {
- 
-  if (packetSize == 0) return;        
-  String incoming = "";
-
-  while (LoRa.available()) {
-    incoming += (char)LoRa.read();
-  }
-
-  Serial.println(packetSize);
-
-  if (incoming[0]=='C' || incoming[0]=='B'){
-    if(incoming[1]=='0'){
-      String dataString="temp = "+String(temp)+" *C, pressure = "+String(pressure)+" Pa, altitude = "+String(alt)+" m";
-      Serial.println(dataString);
-   
-      LoRa.beginPacket();
-      LoRa.print(dataString);
-      LoRa.endPacket();
-    }
-  }
-}
-
-void onReceive(int packetSize) {
-  if (packetSize == 0) return;        
-  String incoming = "";
-
-  while (LoRa.available()) {
-    incoming += (char)LoRa.read();
-  }
-
-  if (incoming[0]=='C' || incoming[0]=='B'){
-    if(incoming[1]=='0'){
-      String dataString="temp = "+String(temp)+" *C, pressure = "+String(pressure)+" Pa, altitude = "+String(alt)+" m";
-      Serial.println(dataString);
-      delay(200);
-      LoRa.beginPacket();
-      LoRa.print(dataString);
-      LoRa.endPacket();
-    }
-  }
-  
-  
-//  if(incoming[0]=='C' or incoming[0]=='B'){
-//    Serial.println("Hi1");
-//    switch(incoming[1]){
-//      case '0':
-//      
-//        String dataString="temp = "+String(bmp.readTemperature())+" *C, pressure = "+bmp.readPressure()+" Pa, altitude = "+bmp.readAltitude()+" m";
-//         Serial.println("Hiiiiii");
-//         Serial.println(dataString);
-//         LoRa.beginPacket();
-//         LoRa.print(dataString);
-//         LoRa.endPacket();
-//    }
-//  }
-  
+  String dataString="cansat_v1.0 :: temp = "+String(temp)+" *C, pressure = "+String(pressure)+" Pa, altitude = "+String(alt)+" m";
+  Serial.println(dataString);
+  LoRa.beginPacket();
+  LoRa.print(dataString);
+  LoRa.endPacket();
+  delay(500);
 }
