@@ -3,6 +3,8 @@
 #define seaLevelPressure_hPa 1013.25
 
 Adafruit_BMP085 bmp;
+
+int n=10;
   
 void setup() {
   Serial.begin(9600);
@@ -13,26 +15,15 @@ void setup() {
 }
   
 void loop() {
-    Serial.print("Temperature = ");
-    Serial.print(bmp.readTemperature());
-    Serial.println(" *C");
+
+//    float total=0;
+//
+//     for(int i=0;i<n;i++){
+//      total+=bmp.readAltitude();
+//     }
+
+     Serial.println(bmp.readAltitude());
     
-    Serial.print("Pressure = ");
-    Serial.print(bmp.readPressure());
-    Serial.println(" Pa");
-
-    Serial.print("Altitude = ");
-    Serial.print(bmp.readAltitude());
-    Serial.println(" meters");
-
-    Serial.print("Pressure at sealevel (calculated) = ");
-    Serial.print(bmp.readSealevelPressure());
-    Serial.println(" Pa");
-
-    Serial.print("Real altitude = ");
-    Serial.print(bmp.readAltitude(seaLevelPressure_hPa * 100));
-    Serial.println(" meters");
     
-    Serial.println();
     delay(500);
 }
