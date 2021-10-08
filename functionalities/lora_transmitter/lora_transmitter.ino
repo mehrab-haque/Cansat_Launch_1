@@ -3,6 +3,9 @@
 int counter = 0;
 void setup() 
 {
+
+//Update from device-2
+
   Serial.begin(9600);
   Serial.println("LoRa Sender");
   if (!LoRa.begin(433E6)) 
