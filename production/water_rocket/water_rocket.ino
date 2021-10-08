@@ -18,6 +18,12 @@ int red_light_pin= 7;
 float alt=0;
 
 
+//ejection variables
+float maxHeight=0;
+float threshHoldDiff=10;
+int ejectionConfirmation=4;
+int ejectionCounter=0;
+
   
 void setup() {
   pinMode(red_light_pin, OUTPUT);
@@ -46,13 +52,25 @@ void loop() {
 
      String dataString="rocket_v1.0 :: altitude = "+String(alt)+" m";
 
-     Serial.println(dataString);
+     
+
+      if(alt>maxHeight)
+        maxHeight=alt;
+      if(maxHeight-alt>threshHoldDiff)
+        ejectionCounter++;
+      if(ejectionCounter>=ejectionConfirmation){
+        eject();
+        dataString="rocket_v1.0 :: ejection at altitude = "+String(alt);
+      }
+        
+
+        Serial.println(dataString);
       LoRa.beginPacket();
       LoRa.print(dataString);
       LoRa.endPacket();
       redLight();
       
-      delay(500);
+      delay(400);
 }
 
 void redLight(){
