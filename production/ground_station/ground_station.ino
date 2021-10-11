@@ -20,15 +20,36 @@ void setup()
   Serial.println("LoRa initialized...");
   LoRa.onReceive(onReceive);
   LoRa.receive();
+  //LoRa.onTxDone(onTxDone);
   Serial.println("LoRa listening...");
   Serial.println("ground station initialized...");
 }
 void loop() 
 {
+
+  if (Serial.available() > 0) {
+    String incomingString = Serial.readString().substring(0,2);
+    LoRa.beginPacket();
+    LoRa.print(incomingString);
+    LoRa.endPacket();
+    Serial.println();
+    Serial.println("$$$$$$$$command sent$$$$$$$$");
+    Serial.println(incomingString);
+    Serial.println("$$$$$$$$command end$$$$$$$$");
+    
+
+    delay(1000);
+    LoRa.onReceive(onReceive);
+    LoRa.receive();
+    
+  }
+  
   if(r){
     redLight();
     r=false;
   }
+  
+ 
 }
 
 void onReceive(int packetSize) {
@@ -40,21 +61,26 @@ void onReceive(int packetSize) {
   while (LoRa.available()) {
     incoming += (char)LoRa.read();
   }
+  Serial.println();
   Serial.println("########data recieved########");
   Serial.println(incoming);
   Serial.println("########completed########");
-  Serial.println();
+  
   
 }
 
+void onTxDone() {
+  redLight();
+}
+
 void greenLight(){
-  digitalWrite(red_light_pin, LOW);
   digitalWrite(green_light_pin, HIGH);
+  delay(95);
+  digitalWrite(green_light_pin, LOW);
 }
 
 void redLight(){
   digitalWrite(red_light_pin, HIGH);
-  digitalWrite(green_light_pin, LOW);
   delay(95);
-  greenLight();
+  digitalWrite(red_light_pin, LOW);
 }
