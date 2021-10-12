@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <LoRa.h>
-#include <Wire.h>
+#include <Wire.h>o
 #include <Adafruit_BMP085.h>
 
 #define seaLevelPressure_hPa 1013.25

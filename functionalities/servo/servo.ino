@@ -2,16 +2,19 @@
 
 Servo servo1;  
 int normalAngle1 = 0;    
-int ejectedAngle1 = 90;
+int ejectedAngle1 = 120;
 
 Servo servo2;  
 int normalAngle2 = 0;    
-int ejectedAngle2 = 90;
+int ejectedAngle2 = 120;
 
 void setup() {
   Serial.begin(9600);
   servo1.attach(5);
   servo2.attach(6);
+  servo1.write(normalAngle1);
+  servo2.write(normalAngle2);
+  delay(10000);
 }
 
 void loop() {
