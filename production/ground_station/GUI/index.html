@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js" integrity="sha512-Idr7xVNnMWCsgBQscTSCivBNWWH30oo/tzYORviOCrLKmBaRxRflm2miNhTFJNVmXvCtzgms5nlJF4az2hiGnA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+        <script>
+            const labels = [
+
+            ];
+            const data = {
+              labels: labels,
+              datasets: [{
+                label: 'alt(m) vs time(s)',
+                backgroundColor: 'rgb(0, 200, 255)',
+                borderColor: 'rgb(0, 200, 255)',
+                data: [],
+              }]
+            };
+            const config = {
+              type: 'line',
+              data: data,
+              options: {
+                scales: {
+   yAxes: [{
+      ticks: {
+         stepSize: 1
+      }
+   }]
+}
+              }
+            };
+
+                var myChart = new Chart(
+                    document.getElementById('myChart'),
+                    config
+                  );
+             setInterval(function() {
+                axios.get('http://127.0.0.1:5000/').then(res=>{
+                    var l=[]
+                    var d=[]
+                    res.data.map(p=>{
+                        l.push((p[0]-res.data[0][0])/1000)
+                        d.push(p[1])
+                      })
+                      myChart.config._config.data.labels=l
+                      myChart.config._config.data.datasets[0].data=d
+                      myChart.update()
+                });
+
+            }, 200);
+        </script>
+    </body>
+</html>
