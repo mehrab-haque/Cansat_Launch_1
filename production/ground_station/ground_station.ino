@@ -1,15 +1,15 @@
 #include <SPI.h>
 #include <LoRa.h> 
 
-int red_light_pin= 7;
-int green_light_pin = 6;
+int red_light_pin= 3;
+int yellow_light_pin = 7;
 
-bool r=false;
+bool y=false,r=false;
 
 void setup() 
 {
   pinMode(red_light_pin, OUTPUT);
-  greenLight();
+  pinMode(yellow_light_pin, OUTPUT);
   Serial.begin(9600);
   Serial.println("ground station initializing...");
   if (!LoRa.begin(433E6)) 
@@ -36,8 +36,10 @@ void loop()
     Serial.println("$$$$$$$$command sent$$$$$$$$");
     Serial.println(incomingString);
     Serial.println("$$$$$$$$command end$$$$$$$$");
+    Serial.println();
     
-
+    redLight();
+  
     delay(1000);
     LoRa.onReceive(onReceive);
     LoRa.receive();
@@ -48,6 +50,10 @@ void loop()
     redLight();
     r=false;
   }
+  if(y){
+    yellowLight();
+    y=false;
+  }
   
  
 }
@@ -56,27 +62,18 @@ void onReceive(int packetSize) {
   if (packetSize == 0) return;         
   String incoming = "";
 
-  r=true;
+  y=true;
 
   while (LoRa.available()) {
     incoming += (char)LoRa.read();
   }
-  Serial.println();
-  Serial.println("########data recieved########");
   Serial.println(incoming);
-  Serial.println("########completed########");
-  
-  
 }
 
-void onTxDone() {
-  redLight();
-}
-
-void greenLight(){
-  digitalWrite(green_light_pin, HIGH);
+void yellowLight(){
+  digitalWrite(yellow_light_pin, HIGH);
   delay(95);
-  digitalWrite(green_light_pin, LOW);
+  digitalWrite(yellow_light_pin, LOW);
 }
 
 void redLight(){
