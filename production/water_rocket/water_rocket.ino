@@ -21,6 +21,7 @@ int red_light_pin= 7;
 
 float alt=0;
 
+bool isEjected=false;
 
 //ejection variables
 //float maxHeight=0;
@@ -57,29 +58,23 @@ void setup() {
   
 void loop() {
 
-//     alt=bmp.readAltitude();
-//
-//     String dataString="rocket_v1.0 :: altitude = "+String(alt)+" m";
+    if(isEjected){
 
-     
+     alt=bmp.readAltitude();
 
-//      if(alt>maxHeight)
-//        maxHeight=alt;
-//      if(maxHeight-alt>threshHoldDiff)
-//        ejectionCounter++;
-//      if(ejectionCounter>=ejectionConfirmation){
-//        eject();
-//        dataString="rocket_v1.0 :: ejection at altitude = "+String(alt);
-//      }
+     String dataString="rocket_v1.0 :: ejected, altitude = "+String(alt)+" m";
+
+    
         
 
-//        Serial.println(dataString);
-//      LoRa.beginPacket();
-//      LoRa.print(dataString);
-//      LoRa.endPacket();
-//      redLight();
-//      
-//      delay(400);
+
+      LoRa.beginPacket();
+      LoRa.print(dataString);
+      LoRa.endPacket();
+      redLight();
+      
+      delay(900+random(0,200));
+    }
 
         if(r){
           redLight();
@@ -90,23 +85,23 @@ void loop() {
 void onReceive(int packetSize) {
   if (packetSize == 0) return;         
   String incoming = "";
-
+  int l=0;
  
 
   while (LoRa.available()) {
-    incoming += (char)LoRa.read();
+    char c = (char)LoRa.read();
+    incoming+=c;
+    if(c=='e'){
+      r=true;
+       eject();
+       break;
+    }
+    else if(c=='l'){
+      r=true;
+       lock();
+       break;
+    }
   }
-  if(incoming[0]=='g' and incoming[1]=='l'){
-    r=true;
-    lock();
-    Serial.println(incoming);
-  }
-  if(incoming[0]=='g' and incoming[1]=='e'){
-    r=true;
-    eject();
-    Serial.println(incoming);
-  }
-  
   
 }
 
@@ -119,6 +114,7 @@ void redLight(){
 void eject(){
   servo1.write(ejectedAngle1);
   servo2.write(ejectedAngle2);
+  isEjected=true;
 }
 
 void lock(){

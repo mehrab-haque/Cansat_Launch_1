@@ -28,15 +28,11 @@ void loop()
 {
 
   if (Serial.available() > 0) {
-    String incomingString = Serial.readString().substring(0,2);
+    String incomingString = Serial.readString();
     LoRa.beginPacket();
     LoRa.print(incomingString);
     LoRa.endPacket();
-    Serial.println();
-    Serial.println("$$$$$$$$command sent$$$$$$$$");
-    Serial.println(incomingString);
-    Serial.println("$$$$$$$$command end$$$$$$$$");
-    Serial.println();
+    Serial.println("command : "+incomingString);
     
     redLight();
   
