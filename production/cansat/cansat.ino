@@ -39,7 +39,7 @@ void loop()
   temp=bmp.readTemperature();
   alt=bmp.readAltitude();
   pressure=bmp.readPressure();
-  String dataString="cansat_v1.0 :: temp = "+String(temp)+" *C, pressure = "+String(pressure)+" Pa, altitude = "+String(alt)+" m";
+  String dataString="["+String(temp)+","+String(pressure)+","+String(alt)+"]";
   Serial.println(dataString);
   LoRa.beginPacket();
   LoRa.print(dataString);
