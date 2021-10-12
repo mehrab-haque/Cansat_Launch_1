@@ -1,6 +1,5 @@
 import serial
 import json
-import numpy as np
 import matplotlib.pyplot as plt
 import time
 import threading
@@ -20,12 +19,15 @@ def kbdListener():
         if kbdInput=='launch':
             with open("output.txt", "a") as f:
                 f.write((str(current_milli_time())+" => launched\n"))
+                print("launch confirmed...")
         elif kbdInput=='rocket_grounded':
             with open("output.txt", "a") as f:
                 f.write((str(current_milli_time())+" => rocket grounded\n"))
+                print("rocket grounded confirmed...")
         elif kbdInput=='cansat_grounded':
             with open("output.txt", "a") as f:
                 f.write((str(current_milli_time())+" => cansat grounded\n"))
+                print("cansat grounded confirmed...")
         else:
             ser.write(kbdInput.encode())
 
