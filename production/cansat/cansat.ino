@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <LoRa.h>
-#include <Wire.h>o
+#include <Wire.h>
 #include <Adafruit_BMP085.h>
 
 #define seaLevelPressure_hPa 1013.25
@@ -45,7 +45,7 @@ void loop()
   LoRa.print(dataString);
   LoRa.endPacket();
   redLight();
-  delay(500);
+  delay(250);
 }
 
 void greenLight(){
